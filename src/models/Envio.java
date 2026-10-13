@@ -34,6 +34,8 @@ public class Envio {
     public List<Movimiento> getHistorial() {
         return Collections.unmodifiableList(historial);
     }
+
+    // ===================== Obtener el último movimiento del envío =====================
     public Movimiento getUltimoMovimiento() {
         if (historial.isEmpty()) {
             return null;
@@ -53,6 +55,7 @@ public class Envio {
     }
     registrarMovimiento(sucursal, TipoMovimiento.DESPACHADO);
     }
+
     public void recibir(Sucursal sucursal) {
         for (Paquete p : paquetes) {
             if (!p.puedeAlmacenar()) {
@@ -65,6 +68,7 @@ public class Envio {
         }
         registrarMovimiento(sucursal, TipoMovimiento.RECIBIDO);
     }
+
     public void entregar(Sucursal sucursal) {
         for (Paquete p : paquetes) {
             if (!p.puedeEntregar()) {
@@ -77,28 +81,56 @@ public class Envio {
         }
         registrarMovimiento(sucursal, TipoMovimiento.ENTREGADO);
     }
+    
     // ===================== Registrar un movimiento en el historial del envío =====================
     // Método privado para registrar un movimiento en el historial del envío
     private void registrarMovimiento(Sucursal sucursal, TipoMovimiento tipoMovimiento) {
         historial.add(new Movimiento(sucursal, tipoMovimiento, java.time.LocalDateTime.now()));
     }
-    // Método para mostrar el historial de movimientos del envío
-    public void mostrarHistorial() {
-        System.out.println("Historial del envío:");
-        for (Movimiento m : historial) {
-            System.out.println("\t" + m);
-        }
-    }
-    // ===================== Mostrar resumen del envío =====================
-    public void mostrarResumen() {
-        System.out.println("Resumen del Envío:");
-        System.out.println("\t Envío con " + paquetes.size() + " paquetes.");
-        System.out.println("\t Costo del producto: $" + costo);
-        System.out.println("\t Costo de recargo por peso excesivo: $" + recargo);
-        System.out.println("\t Costo total: $" + (costo + recargo));
-        System.out.println("Detalles de los paquetes:");
+    
+    // // Método para mostrar el historial de movimientos del envío
+    // public void mostrarHistorial() {
+    //     System.out.println("Historial del envío:");
+    //     for (Movimiento m : historial) {
+    //         System.out.println("\t" + m);
+    //     }
+    // }
+
+//     // ===================== Mostrar resumen del envío =====================
+//     public void mostrarResumen() {
+//         System.out.println("Resumen del Envío:");
+//         System.out.println("\t Envío con " + paquetes.size() + " paquetes.");
+//         System.out.println("\t Costo del producto: $" + costo);
+//         System.out.println("\t Costo de recargo por peso excesivo: $" + recargo);
+//         System.out.println("\t Costo total: $" + (costo + recargo));
+//         System.out.println("Detalles de los paquetes:");
+//         for (Paquete p : paquetes) {
+//             p.mostrarInformacion();
+//         }
+//     }
+// }
+
+// ===================== Obtener resumen del envío (NUEVO) =====================
+    public String generarResumen() {
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Resumen del Envío:\n");
+        resumen.append("\t Envío con ").append(paquetes.size()).append(" paquetes.\n");
+        resumen.append("\t Costo del producto: $").append(costo).append("\n");
+        resumen.append("\t Costo de recargo por peso excesivo: $").append(recargo).append("\n");
+        resumen.append("\t Costo total: $").append(costo + recargo).append("\n");
+        resumen.append("Detalles de los paquetes:\n");
+        
         for (Paquete p : paquetes) {
-            p.mostrarInformacion();
+            // Nota: Si 'p.mostrarInformacion()' también tiene System.out.println,
+            // deberás modificar Paquete.java para que devuelva un String en su lugar.
+            // Asumiendo que Paquete tiene un toString() o getInformacion()
+            resumen.append("\t").append(p.toString()).append("\n"); 
         }
+        return resumen.toString();
     }
+
+
+
+
+
 }

@@ -8,6 +8,7 @@ public class EnvioExpres extends Envio {
     public EnvioExpres(List<Paquete> paquetes) {
         super(paquetes);
     }
+
     //==================== Obtener el costo del envío expres =====================
     @Override
     public double getCosto() {
@@ -16,25 +17,29 @@ public class EnvioExpres extends Envio {
         // Recargo adicional para envío expres
         return costoBase * 1.5; // 50% más caro que el estándar
     }
-    //==================== Mostrar resumen del envío expres =====================
+
+    //==================== Obtener resumen del envío expres (MODIFICADO) =====================
     @Override
-    public void mostrarResumen() {
-        System.out.println("Resumen del Envío Exprés:");
-        System.out.println("\t Envío con paquetes: " + getPaquetes().size());
-        
+    public String generarResumen() {
         double costoBase = super.getCosto();
         double recargoPeso = super.getRecargo();
         double recargoExpres = costoBase * 0.5; // el 50% extra
         double costoTotal = getCosto() + recargoPeso; // costo expres + recargo por peso
 
-        System.out.println("\t Costo base: $" + costoBase);
-        System.out.println("\t Recargo por peso excesivo: $" + recargoPeso);
-        System.out.println("\t Recargo por envío exprés: $" + recargoExpres);
-        System.out.println("\t Costo total: $" + costoTotal);
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Resumen del Envío Exprés:\n");
+        resumen.append("\t Envío con paquetes: ").append(getPaquetes().size()).append("\n");
+        resumen.append("\t Costo base: $").append(costoBase).append("\n");
+        resumen.append("\t Recargo por peso excesivo: $").append(recargoPeso).append("\n");
+        resumen.append("\t Recargo por envío exprés: $").append(recargoExpres).append("\n");
+        resumen.append("\t Costo total: $").append(costoTotal).append("\n");
+        resumen.append("Detalles de los paquetes:\n");
 
-        System.out.println("Detalles de los paquetes:");
         for (Paquete p : getPaquetes()) {
-            p.mostrarInformacion();
+            // Se asume que Paquete usa toString() en lugar de mostrarInformacion()
+            resumen.append("\t").append(p.toString()).append("\n");
         }
+
+        return resumen.toString();
     }
 }

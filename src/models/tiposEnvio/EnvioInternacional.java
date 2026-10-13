@@ -8,32 +8,37 @@ public class EnvioInternacional extends Envio {
     public EnvioInternacional(List<Paquete> paquetes) {
         super(paquetes);
     } 
+
     //==================== Obtener el costo del envío internacional =====================
+    @Override
     public double getCosto() {
         // Costo base para envío internacional
         double costoBase = super.getCosto();
         // Recargo adicional para envío internacional
         return costoBase * 2.0; // 100% más caro que el estándar
     }
-    //==================== Mostrar resumen del envío internacional =====================
+
+    //==================== Obtener resumen del envío internacional (MODIFICADO) =====================
     @Override
-    public void mostrarResumen() {
-        System.out.println("Resumen del Envío Internacional:");
-        System.out.println("\t Envío con paquetes: " + getPaquetes().size());
-        
+    public String generarResumen() {
         double costoBase = super.getCosto();
         double recargoPeso = super.getRecargo();
-        double recargoInternacional = costoBase * 0.5; // el 50% extra
+        double recargoInternacional = costoBase * 1.0; // el 100% extra (costoBase * 2.0 - costoBase)
         double costoTotal = getCosto() + recargoPeso; // costo internacional + recargo por peso
 
-        System.out.println("\t Costo base: $" + costoBase);
-        System.out.println("\t Recargo por peso excesivo: $" + recargoPeso);
-        System.out.println("\t Recargo por envío Internacional: $" + recargoInternacional);
-        System.out.println("\t Costo total: $" + costoTotal);
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Resumen del Envío Internacional:\n");
+        resumen.append("\t Envío con paquetes: ").append(getPaquetes().size()).append("\n");
+        resumen.append("\t Costo base: $").append(costoBase).append("\n");
+        resumen.append("\t Recargo por peso excesivo: $").append(recargoPeso).append("\n");
+        resumen.append("\t Recargo por envío Internacional: $").append(recargoInternacional).append("\n");
+        resumen.append("\t Costo total: $").append(costoTotal).append("\n");
+        resumen.append("Detalles de los paquetes:\n");
 
-        System.out.println("Detalles de los paquetes:");
         for (Paquete p : getPaquetes()) {
-            p.mostrarInformacion();
+            resumen.append("\t").append(p.toString()).append("\n");
         }
+
+        return resumen.toString();
     }
 }

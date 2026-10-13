@@ -12,6 +12,7 @@ public class Cliente {
     private String email;
     private String cuilCuit;
     private List<Envio> envios;
+
     //================ Constructor ==========================
     public Cliente(String nombre, String apellido, String direccion, String telefono, String email, String cuilCuit) {
         this.nombre = nombre;
@@ -22,6 +23,7 @@ public class Cliente {
         this.cuilCuit = cuilCuit;
         this.envios = new ArrayList<>();
     }
+
     //================ Getters ==========================
     public String getNombre() {
         return nombre;
@@ -44,7 +46,9 @@ public class Cliente {
     public List<Envio> getEnvios() {
         return Collections.unmodifiableList(envios);
     }
+
     //================ Gestionar envíos ==========================
+    
     // Método para agregar un envío a la lista de envíos del cliente
     public void agregarEnvio(Envio envio) {
         if (envio == null) {
@@ -52,14 +56,26 @@ public class Cliente {
         }
         this.envios.add(envio);
     }
+
     // Método para obtener la cantidad de envíos del cliente
     public int cantidadEnvios() {
         return envios.size();
     }
-    // Método para mostrar los envíos del cliente, utilizando el método mostrarResumen() de la clase Envio
-    public void mostrarEnvios(){
-        for (Envio e : envios) {
-            e.mostrarResumen();;
+
+    // 2.1 - MODIFICADO: Ahora devuelve un String en lugar de imprimir directamente
+    public String generarResumenEnvios() {
+        if (envios.isEmpty()) {
+            return "El cliente no tiene envíos registrados.";
         }
+        
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Envíos del cliente ").append(nombre).append(" ").append(apellido).append(":\n");
+        
+        for (int i = 0; i < envios.size(); i++) {
+            resumen.append("--- Envío #").append(i + 1).append(" ---\n");
+            // Llamamos al nuevo método generarResumen() de la clase Envio
+            resumen.append(envios.get(i).generarResumen()).append("\n");
+        }
+        return resumen.toString();
     }
 }

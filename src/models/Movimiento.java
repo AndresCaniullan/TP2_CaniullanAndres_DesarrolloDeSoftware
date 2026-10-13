@@ -26,6 +26,6 @@ public class Movimiento {
     //================  Mostrar la información del movimiento de manera legible ==========================
     @Override
     public String toString(){
-        return fechaHora + " - " + tipoMovimiento + " en sucursal: " + sucursal.getIdSucursal() + ")";
+        return fechaHora + " - " + tipoMovimiento + " en sucursal: N°" + sucursal.getIdSucursal() + " - " + sucursal.getCiudad() + ", " + sucursal.getDireccion();
     }
 }
