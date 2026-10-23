@@ -51,6 +51,8 @@ public class MainInteractiva {
             System.out.println("4. Registrar Despacho desde Sucursal Bahía Blanca");
             System.out.println("5. Consultar Resumen y Estado del Envío");
             System.out.println("6. Consultar Historial Completo de Movimientos");
+            System.out.println("7. Consultar Sucursales Recorridas por el Envío");
+            System.out.println("8. Consultar Último Movimiento del Envío");
             System.out.println("0. Salir del sistema");
             System.out.println("--------------------------------------------------");
             System.out.print("Ingrese el número de la opción deseada: ");
@@ -87,6 +89,20 @@ public class MainInteractiva {
                         for (src.models.Movimiento m : historial) {
                             System.out.println("\t> " + m.toString());
                         }
+                    }
+                    break;
+                case "7":
+                    System.out.println("=== SUCURSALES RECORRIDAS ===");
+                    for (Sucursal s : envio.getSucursalesRecorridas()) {
+                        System.out.println("\t> N°" + s.getIdSucursal() + " - " + s.getCiudad());
+                    }
+                    break;
+                case "8":
+                    System.out.println("=== ÚLTIMO MOVIMIENTO ===");
+                    try {
+                        System.out.println("\t> " + envio.getUltimoMovimiento());
+                    } catch (IllegalStateException e) {
+                        System.out.println(" [!] " + e.getMessage());
                     }
                     break;
                 case "0":

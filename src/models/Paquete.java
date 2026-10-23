@@ -73,10 +73,9 @@ public class Paquete {
         this.estado = EstadoPaquete.DEVUELTO;
     }
     //===================== Mostrar la información del paquete =====================
-    public void mostrarInformacion() {
-        System.out.println("\tID: " + id);
-        System.out.println("\tDescripción: " + descripcion);
-        System.out.println("\tPeso: " + peso + " kg");
-        System.out.println("\tEstado: " + estado);
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Descripción: " + descripcion
+             + " | Peso: " + peso + " kg | Estado: " + estado;
     }
 }

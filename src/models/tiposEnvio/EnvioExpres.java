@@ -36,7 +36,6 @@ public class EnvioExpres extends Envio {
         resumen.append("Detalles de los paquetes:\n");
 
         for (Paquete p : getPaquetes()) {
-            // Se asume que Paquete usa toString() en lugar de mostrarInformacion()
             resumen.append("\t").append(p.toString()).append("\n");
         }
 

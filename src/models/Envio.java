@@ -16,9 +16,9 @@ public class Envio {
         if (paquetes.size() == 0 || paquetes.size() > 3) {
             throw new IllegalArgumentException("Un envío debe tener entre 1 y 3 paquetes.");
         }
-        this.paquetes = paquetes;
-        this.costo = CalculadoraCostos.calcularCosto(paquetes);
-        this.recargo = CalculadoraCostos.aplicarRecargo(paquetes);
+        this.paquetes = new ArrayList<>(paquetes);
+        this.costo = CalculadoraCostos.calcularCosto(this.paquetes);
+        this.recargo = CalculadoraCostos.aplicarRecargo(this.paquetes);
         this.historial = new ArrayList<>();
     }
     // ===================== Getters =====================
@@ -29,19 +29,29 @@ public class Envio {
         return recargo;
     }
     public List<Paquete> getPaquetes() {
-        return paquetes;
+    return new ArrayList<>(paquetes);
     }
     public List<Movimiento> getHistorial() {
         return Collections.unmodifiableList(historial);
     }
 
     // ===================== Obtener el último movimiento del envío =====================
-    public Movimiento getUltimoMovimiento() {
-        if (historial.isEmpty()) {
-            return null;
-        }
-        return historial.get(historial.size() - 1);
+   public Movimiento getUltimoMovimiento() {
+    if (historial.isEmpty()) {
+        throw new IllegalStateException("El envío todavía no registra movimientos.");
     }
+    return historial.get(historial.size() - 1);
+}
+    // ===================== Consultar las sucursales recorridas por el envío =====================
+public List<Sucursal> getSucursalesRecorridas() {
+    List<Sucursal> recorridas = new ArrayList<>();
+    for (Movimiento m : historial) {
+        if (!recorridas.contains(m.getSucursal())) {
+            recorridas.add(m.getSucursal());
+        }
+    }
+    return recorridas;
+}
     // ===================== Cambiar el estado del envío ======================
    public void despachar(Sucursal sucursal) {
     for (Paquete p : paquetes) {
@@ -88,29 +98,8 @@ public class Envio {
         historial.add(new Movimiento(sucursal, tipoMovimiento, java.time.LocalDateTime.now()));
     }
     
-    // // Método para mostrar el historial de movimientos del envío
-    // public void mostrarHistorial() {
-    //     System.out.println("Historial del envío:");
-    //     for (Movimiento m : historial) {
-    //         System.out.println("\t" + m);
-    //     }
-    // }
 
-//     // ===================== Mostrar resumen del envío =====================
-//     public void mostrarResumen() {
-//         System.out.println("Resumen del Envío:");
-//         System.out.println("\t Envío con " + paquetes.size() + " paquetes.");
-//         System.out.println("\t Costo del producto: $" + costo);
-//         System.out.println("\t Costo de recargo por peso excesivo: $" + recargo);
-//         System.out.println("\t Costo total: $" + (costo + recargo));
-//         System.out.println("Detalles de los paquetes:");
-//         for (Paquete p : paquetes) {
-//             p.mostrarInformacion();
-//         }
-//     }
-// }
-
-// ===================== Obtener resumen del envío (NUEVO) =====================
+    // ===================== Obtener resumen del envío (NUEVO) =====================
     public String generarResumen() {
         StringBuilder resumen = new StringBuilder();
         resumen.append("Resumen del Envío:\n");
@@ -121,9 +110,6 @@ public class Envio {
         resumen.append("Detalles de los paquetes:\n");
         
         for (Paquete p : paquetes) {
-            // Nota: Si 'p.mostrarInformacion()' también tiene System.out.println,
-            // deberás modificar Paquete.java para que devuelva un String en su lugar.
-            // Asumiendo que Paquete tiene un toString() o getInformacion()
             resumen.append("\t").append(p.toString()).append("\n"); 
         }
         return resumen.toString();
